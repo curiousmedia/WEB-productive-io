@@ -187,6 +187,7 @@ class ProductiveIo
 	protected function headers()
 	{
 		return [
+			'Content-Type' => 'application/vnd.api+json',
 			'X-Organization-Id' => $this->config['id'],
 			'X-Auth-Token' => $this->config['token'],
 		];
