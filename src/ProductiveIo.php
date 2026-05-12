@@ -147,7 +147,7 @@ class ProductiveIo
 	/**
 	 * Results
 	 *
-	 * @param string Key to pull result data
+	 * @param string|array Key to pull result data
 	 * @return mixed
 	 */
 	public function results($key = null)
@@ -155,7 +155,23 @@ class ProductiveIo
 		$responses = [];
 
 		foreach ($this->response as $response) {
-			$responses = array_merge($responses, ($key) ? $response->{$key} : $response);
+			if (is_array($key)) {
+				foreach($key as $k) {
+					if (!isset($response->{$k})) {
+						continue;
+					}
+
+					if (!isset($responses[$k])) {
+						$responses[$k] = [];
+					}
+
+					$responses[$k] = array_merge($responses[$k], $response->{$k});
+				}
+			} else if ($key) {
+				$responses = array_merge($responses, $response->{$key});
+			} else {
+				$responses = array_merge($responses, $response);
+			}
 		}
 
 		return $responses;
